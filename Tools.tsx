@@ -1,0 +1,6 @@
+import {useMemo} from "react";import {tools} from "../data/tools";import ToolCard from "../components/ToolCard";
+export default function Tools({query,fav,onFav}:{query:string;fav:string[];onFav:(id:string)=>void}){
+ const cats=["All","Popular",...Array.from(new Set(tools.map(t=>t.category))).filter(x=>x!=="Popular")]; const params=new URLSearchParams(location.hash.split("?")[1]||""); const cat=params.get("cat")||"All";
+ const filtered=useMemo(()=>tools.filter(t=>(cat==="All"||t.category===cat)&&(t.name+" "+t.description+" "+t.category).toLowerCase().includes(query.toLowerCase())),[query,cat]);
+ return <main className="section container"><div className="page-title"><p className="eyebrow">TOOLBOX</p><h1>All image tools</h1><p>Everything you need for everyday image, photo and document tasks.</p></div><div className="chips">{cats.map(c=><a className={c===cat?"chip active":"chip"} href={c==="All"?"#/tools":`#/tools?cat=${encodeURIComponent(c)}`} key={c}>{c}</a>)}</div>{filtered.length===0?<div className="empty">No tools found. Try another search.</div>:<div className="grid">{filtered.map(t=><ToolCard key={t.id} tool={t} fav={fav.includes(t.id)} onFav={onFav}/>)}</div>}</main>
+}

@@ -1,0 +1,7 @@
+import {useEffect,useState} from "react";import Header from "./components/Header";import Footer from "./components/Footer";import Home from "./pages/Home";import Tools from "./pages/Tools";import ToolPage from "./pages/ToolPage";import Info from "./pages/Info";
+export default function App(){const [route,setRoute]=useState(location.hash||"#/");const [query,setQuery]=useState("");const [dark,setDark]=useState(localStorage.getItem("theme")==="dark");const [fav,setFav]=useState<string[]>(JSON.parse(localStorage.getItem("favorites")||"[]"));
+ useEffect(()=>{const h=()=>setRoute(location.hash||"#/");addEventListener("hashchange",h);return()=>removeEventListener("hashchange",h)},[]);
+ useEffect(()=>{document.documentElement.dataset.theme=dark?"dark":"light";localStorage.setItem("theme",dark?"dark":"light")},[dark]);
+ const onFav=(id:string)=>setFav(v=>{const n=v.includes(id)?v.filter(x=>x!==id):[...v,id];localStorage.setItem("favorites",JSON.stringify(n));return n});
+ let page:any=<Home fav={fav} onFav={onFav}/>;if(route.startsWith("#/tools"))page=<Tools query={query} fav={fav} onFav={onFav}/>;else if(route.startsWith("#/tool/"))page=<ToolPage id={route.split("?")[0].replace("#/tool/","")}/>;else if(route.startsWith("#/about"))page=<Info page="about"/>;else if(route.startsWith("#/contact"))page=<Info page="contact"/>;
+ return <><Header dark={dark} setDark={setDark} query={query} setQuery={setQuery}/>{page}<Footer/></>}

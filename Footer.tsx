@@ -1,0 +1,1 @@
+export default function Footer(){return <footer><div className="container footer"><div><b>PremTools</b><p>Simple, Fast & Free Image Tools</p></div><div><a href="#/tools">All Tools</a><a href="#/about">Privacy</a><a href="#/contact">Contact</a></div></div><div className="copyright">© 2026 PremTools. Built for simple, privacy-friendly image utilities.</div></footer>}
